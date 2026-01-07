@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: efs-logs-pv
+spec:
+  capacity:
+    storage: 100Gi  # Adjust size as needed; EFS is elastic
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany  # Essential for shared Airflow logs
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: efs-logs-sc
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: fs-12345678abcdef0  # Your EFS filesystem ID (fs-xxx) # todo figure out how to populate this

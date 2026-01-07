@@ -1,0 +1,1 @@
+kubectl create secret tls tls-secret --cert=<path_to>/mintrevecore.pem --key=<path_to>/clean-key.pem

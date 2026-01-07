@@ -1,0 +1,26 @@
+# Default values for AWS Load Balancer Controller (Ingress Controller)
+# See: https://github.com/aws/eks-charts/tree/master/stable/aws-load-balancer-controller
+
+clusterName: ""
+region: "us-east-1"
+serviceAccount:
+  create: true
+  name: "aws-load-balancer-controller"
+
+replicaCount: 2
+
+image:
+  repository: "602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-load-balancer-controller"
+  tag: "v2.7.1"
+  pullPolicy: IfNotPresent
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+# Additional settings can be added as needed
+

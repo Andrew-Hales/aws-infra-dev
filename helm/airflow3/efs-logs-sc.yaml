@@ -1,0 +1,13 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: efs-logs-sc
+provisioner: efs.csi.aws.com
+parameters:
+  provisioningMode: efs-ap  # Or 'efs' if no access point
+  fileSystemId: fs-12345678abcdef0  # Your EFS ID # todo figure out how to populate this
+  directoryPerms: "700"
+  gidRangeStart: "1000"
+  gidRangeEnd: "2000"
+  basePath: "/airflow-logs"  # Optional subpath
+reclaimPolicy: Retain

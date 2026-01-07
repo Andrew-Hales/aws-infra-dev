@@ -1,0 +1,11 @@
+# Default values for Argo Rollouts Helm chart
+# Reference: https://github.com/argoproj/argo-helm/tree/main/charts/argo-rollouts
+
+controller:
+  replicaCount: 1
+
+serviceAccount:
+  create: true
+
+# Add more custom values as needed for your environment
+

@@ -1,0 +1,28 @@
+# Default values for ArgoCD Helm chart
+# Reference: https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
+
+server:
+  service:
+    type: LoadBalancer
+    ports:
+      http: 80
+      https: 443
+  ingress:
+    enabled: false
+    # hosts:
+    #   - argocd.example.com
+    # annotations: {}
+    # tls: []
+
+controller:
+  replicas: 1
+
+repoServer:
+  replicas: 1
+
+applicationSet:
+  replicas: 1
+
+redis:
+  enabled: true
+

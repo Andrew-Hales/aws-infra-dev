@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: airflow-logs-pvc
+  namespace: airflow  # Match your Airflow namespace
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi  # Match or exceed PV capacity
+  volumeName: efs-logs-pv  # Binds to specific PV
+  storageClassName: efs-logs-sc

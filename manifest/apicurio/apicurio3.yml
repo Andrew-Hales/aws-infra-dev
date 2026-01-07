@@ -1,0 +1,42 @@
+
+apiVersion: registry.apicur.io/v1
+kind: ApicurioRegistry3
+metadata:
+  name: example-apicurio
+spec:
+  app:
+    storage:
+      type: postgresql
+      sql:
+        dataSource:
+          url: "jdbc:postgresql://<correct_url>:5432/apicurio3?sslmode=require"
+          username: "airflow"
+          password:
+            name: apicurio-db-secret
+    ingress:
+      host: apicurio3-app3.mint.revecore.com
+      ingressClassName: alb
+    tls:
+      truststoreSecretRef:
+        name: classy-lassy
+        key: ca.p12
+      truststorePasswordSecretRef:
+        name: classy-lassy
+        key: ca.password
+      keystorePasswordSecretRef:
+        name: classy-lassy
+        key: ca.password
+      keystoreSecretRef:
+        name: classy-lassy
+        key: ca.p12
+      insecureRequests: enabled
+
+
+  ui:
+#    env:
+#      - name: REGISTRY_API_URL
+#        value: "https://apicurio3-app3.mint.revecore.com/apis/registry/v3"
+    ingress:
+      host: apicurio3-ui3.mint.revecore.com
+      ingressClassName: alb
+

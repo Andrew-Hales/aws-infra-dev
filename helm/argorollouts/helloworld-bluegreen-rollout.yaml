@@ -1,0 +1,87 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: helloworld-bluegreen
+  namespace: argo-rollouts
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: helloworld-bluegreen
+  template:
+    metadata:
+      labels:
+        app: helloworld-bluegreen
+    spec:
+      containers:
+      - name: helloworld
+        image: argoproj/rollouts-demo:blue
+        ports:
+        - containerPort: 8080
+  strategy:
+    blueGreen:
+      activeService: helloworld-bluegreen-active
+      previewService: helloworld-bluegreen-preview
+      autoPromotionEnabled: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloworld-bluegreen-active
+  namespace: argo-rollouts
+spec:
+  selector:
+    app: helloworld-bluegreen
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloworld-bluegreen-preview
+  namespace: argo-rollouts
+spec:
+  selector:
+    app: helloworld-bluegreen
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: helloworld-bluegreen-active-ingress
+  namespace: argo-rollouts
+spec:
+  rules:
+    - host: helloworld.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: helloworld-bluegreen-active
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: helloworld-bluegreen-preview-ingress
+  namespace: argo-rollouts
+spec:
+  rules:
+    - host: helloworld-preview.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: helloworld-bluegreen-preview
+                port:
+                  number: 80
